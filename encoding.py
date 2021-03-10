@@ -15,7 +15,7 @@ def create_section(section_type, data):
     ]
 
 def ieee754(n):
-    buf = array('f', [0]) * 4
+    buf = array('f', bytes([0]) * 4)
     buf[0] = n
     return buf.tobytes()
 
