@@ -1,6 +1,7 @@
 import leb128
 from array import array
 from .opcodes import sections
+from .util import flatten, setup
 
 def encode_vector(data):
     return [
@@ -51,12 +52,7 @@ def varuint7(n):
         raise Exception("Varuint7 range 0..127")
     return leb128.u.encode(n)
 
+print(vars())
+setup(vars())
+
 # TODO: Make leb128 internal. Avoid deps as much as possible
-
-def flatten(arr):
-    return _concat([], arr)
-
-def _concat(t, arrs):
-    for arr in arrs:
-        t.extend(arr if type(arr) in (list, tuple, bytes, bytearray) else [arr])
-    return t

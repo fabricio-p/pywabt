@@ -1,5 +1,6 @@
 from .encoding import *
 from .opcodes import *
+from .util import eval_expression
 
 class WasmFunction:
     def __init__(self, data, arguments: list[str], returns: list[str], func_locals: list[str], body):
@@ -10,7 +11,7 @@ class WasmFunction:
         self.params = [types[arg] for arg in arguments]
         self.returns =[types[ret] for ret in  returns]
         self.locals = [types[loc] for loc in func_locals]
-        self.body = flatten([instructions[ins] if type(ins) == str else ieee754(ins)if type(ins) == float else ins for ins in body])
+        self.body = eval_expression(body)
     
     def type(self) -> list[int]:
         return [types["func"], *encode_vector(self.params), *encode_vector(self.returns)]
@@ -34,10 +35,7 @@ class WasmFunction:
             "(result %s)" % (' '.join(rtypes),) if len(rtypes) > 0 else ''
         )
     def add_instructions(self, instr):
-        self.body.extend(
-            flatten(
-                [
-                    instructions[ins] if type(ins) == str else ieee754(ins) if type(ins) == float else ins for ins in body]))
+        self.body.extend(eval_expression(instr))
     # NOTE: Implement stuff here
     def __repr__(self):
         fnc = "%s(func $%s " % '\t', self.name

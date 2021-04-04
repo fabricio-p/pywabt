@@ -97,3 +97,8 @@ class Module:
         else:
             raise TypeError("Export type '%s' does not exist or is " % tp +
                     "not implemented yet")
+    
+    def call(self, name, args = []):
+        byte_args = bytearray(flatten([eval_expression(arg) for arg in args]))
+        byte_args.extend(bytes([instructions['call'], self.find(name, "function")]))
+        return bytes(byte_args)
