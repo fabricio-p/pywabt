@@ -4,16 +4,16 @@ from .opcodes import sections
 from .util import flatten, setup
 
 def encode_vector(data):
-    return [
+    return bytes([
         *leb128.u.encode(len(data)),
-        *flatten([*data])
-    ]
+        *flatten(data)
+    ])
 
 def create_section(section_type, data):
-    return [
+    return bytes([
         sections[section_type],
         *encode_vector(data)
-    ]
+    ])
 
 def ieee754(n):
     buf = array('f', bytes([0]) * 4)
@@ -52,7 +52,7 @@ def varuint7(n):
         raise Exception("Varuint7 range 0..127")
     return leb128.u.encode(n)
 
-print(vars())
+#print(vars())
 setup(vars())
 
 # TODO: Make leb128 internal. Avoid deps as much as possible

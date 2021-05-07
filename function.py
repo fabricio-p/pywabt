@@ -1,29 +1,32 @@
 from .encoding import *
 from .opcodes import *
 from .util import eval_expression
+from .type import WasmType
+from typing import Union
 
 class WasmFunction:
-    def __init__(self, data, arguments: list[str], returns: list[str], func_locals: list[str], body):
+    def __init__(self, data: tuple[int, str], type_descriptor: WasmType,
+            func_locals: list[str], body: list[Union[str, int, float]]):
         ref = data[0]
-        name = "$%i" % ref if len(data) == 1 else data[1]
+        self.name = "$%i" % ref if len(data) == 1 else data[1]
         self.ref = ref
-        self.name = "${}".format(ref) if name is None else name
-        self.params = [types[arg] for arg in arguments]
-        self.returns =[types[ret] for ret in  returns]
-        self.locals = [types[loc] for loc in func_locals]
-        self.body = eval_expression(body)
+        self.types = type_descriptor
+        self.locals = func_locals
+        self.body = body
     
     def type(self) -> list[int]:
-        return [types["func"], *encode_vector(self.params), *encode_vector(self.returns)]
+        return self.types.encode()
     
     def export(self, name: str = None) -> list[int]:
         if name is None:
             name = self.name
-        return [*encode_string(name), exports["function"], self.ref]
+        return bytes([*encode_string(name), exports["function"], self.ref])
     
     def code(self):
-        return encode_vector(
-                [*encode_vector(self.locals), *self.body, instructions["end"]])
+        return encode_vector([
+            *encode_vector(self.locals),
+            *eval_expression(self.body),
+            instructions["end"]])
     def type_text(self, indent):
         params = [type_name(t) for t in self.params]
         rtypes = [type_name(t) for t in self.returns]

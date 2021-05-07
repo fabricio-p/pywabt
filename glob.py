@@ -10,15 +10,17 @@ class WasmGlobal:
         name = "$%i" % ref if len(data) == 1 or data[1] is None else data[1]
         self.ref = ref
         self.name = name
-        self.type = types[type_]
+        self.type = type_
         self.mutable = mutable
-        self.expression = eval_expression(expression)
+        self.expression = expression
     def export(self, name=None):
         if name is None:
              name = self.name
         return bytes([*encode_string(name), exports["global"], self.ref])
-    def global_(self):
-        return bytes([self.type,
+    def encode(self):
+        return bytes([
+                types[self.type],
                 int(self.mutable),
-                *flatten(self.expression),
-                instructions['wnd']])
+                *flatten(eval_expression(self.expression)),
+                instructions['end']
+                ])
