@@ -10,4 +10,8 @@ module.add_function("add", ['i32', 'i32'], ['i32'], [], [
 ])
 module.add_export(0, 'function')
 
-module.emit_binary(os.path.expandvars("$HOME/webassembly"))
+# module.emit_binary(os.path.expandvars("$HOME/webassembly"))
+with open(os.path.expandvars("$HOME/webassembly/test.wasm"), 'wb+') as out:
+    module.write_to(out)
+
+print("Finished")

@@ -3,6 +3,7 @@ from .encoding import encode_vector, encode_string, create_section
 from .function import WasmFunction
 from .glob import WasmGlobal
 from .type import WasmType
+from .util import trace, tracer
 from os import getcwd
 from collections import namedtuple
 import io
@@ -16,7 +17,7 @@ class Module:
         self.functions = []
         self.globals = []
         self.exports = []
-        self.header = [*MAGIC_HEADER, *MAGIC_VERSION]
+        self.header = bytes([*MAGIC_HEADER, *MAGIC_VERSION])
     
     def emit_binary(self, path = getcwd(), name = None):
         name = self.name if name is None else name
@@ -44,29 +45,35 @@ class Module:
         yield self.export_section()
         yield self.code_section()
     
+    @trace
     def write_to(self, out, close=True):
         out.truncate(0)
-        out.write(header)
+        out.write(self.header)
         out.write(self.type_section())
         out.write(self.function_section())
-        out.write(bytes(f'{sections["global"]}\0\0', 'utf-8'))
-        size_index, size, length = out.tell() - 2, 0, 0
-        for g in self.generate_globals():
-            length += 1
-            size += len(g)
-            out.write(g)
-        out.seek(size_index, io.SEEK_SET)
-        out.write(bytes([size, length]))
-        out.seek(0, io.SEEK_END)
-        out.write(self.export_section())
-        out.write(bytes(f'{sections["code"]}\0\0', 'utf-8'))
-        size_index, size, length = out.tell() - 2, 0, 0
-        for c in self.generate_codes():
-            length += 1
-            size = len(c)
-            out.write(c)
-        out.seek(size_index, io.SEEK_SET)
-        out.write(bytes([size_length]))
+        if len(self.globals):
+            size_index, size = tracer("index", out.tell()) + 3, 0
+            out.write(
+                bytes(f'{sections["global"]}\0\{len(self.globals)}','utf-8'))
+            for g in self.generate_globals():
+                size += len(g)
+                out.write(g)
+            out.seek(size_index, io.SEEK_SET)
+            out.write(bytes([size, length]))
+            out.seek(0, io.SEEK_END)
+        if len(self.exports):
+            out.write(self.export_section())
+        if len(self.functions):
+            size_index, size = tracer("code index",
+                    tracer("current index[code]", out.tell()) + 3), 0
+            out.write(bytes(f'{sections["code"]}\0{len(self.functions)}',
+                'utf-8'))
+            for c in self.generate_codes():
+                size = len(c)
+                out.write(c)
+            out.seek(size_index, io.SEEK_SET)
+            out.write(bytes([size]))
+            tracer("all code", out.read(size))
         out.seek(0, io.SEEK_SET)
         if close:
             out.close()
@@ -101,6 +108,9 @@ class Module:
         return create_section(
                 "code",
                 encode_vector([f.code() for f in self.functions]))
+    def generate_codes(self):
+        for f in self.functions:
+            yield f.code()
     
     def add_type(self, params, results):
         #nth = len(self.types)
