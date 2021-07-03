@@ -2,7 +2,7 @@
 ---
 __WebAssembly encoding for python__<br />
 Pywabt is a library that makes WebAssembly binary encoding easy.
-It works pretty much like.wabt.
+It works pretty much like wabt.
 
 It can be included inside your project just as any python
 library by doing `import pywabt`
