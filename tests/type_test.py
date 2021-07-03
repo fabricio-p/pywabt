@@ -2,8 +2,8 @@ from pathlib import Path
 import sys
 sys.path.append(str(Path(__file__).parent.parent.parent))
 
-from pynaryen.type import WasmType
-from pynaryen.opcodes import types
+from pywabt.type import WasmType
+from pywabt.opcodes import types
 from unittest import TestCase, main
 
 class WasmTypeTest(TestCase):

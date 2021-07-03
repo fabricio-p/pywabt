@@ -3,9 +3,9 @@ import sys
 sys.path.append(str(Path(__file__).parent.parent.parent))
 
 from unittest import TestCase, main
-from pynaryen.function import WasmFunction
-from pynaryen.type import WasmType
-from pynaryen.opcodes import types, instructions, exports
+from pywabt.function import WasmFunction
+from pywabt.type import WasmType
+from pywabt.opcodes import types, instructions, exports
 
 class WasmFunctionTest(TestCase):
 	def setUp(self):

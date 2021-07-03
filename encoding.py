@@ -15,10 +15,15 @@ def create_section(section_type, data):
 		*encode_vector(data)
 	])
 
-def ieee754(n):
+def ieee754_f32(n):
 	buf = array('f', bytes([0]) * 4)
 	buf[0] = n
 	return buf.tobytes()
+
+def ieee_f64(n):
+    buf = array('d', bytes([0]) * 4)
+    buf[0] = n
+    return buf.tobytes()
 
 def encode_string(string):
 	return bytes([len(string), *bytes(string, 'utf-8')])

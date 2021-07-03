@@ -4,8 +4,8 @@ sys.path.append(str(project_dir.parent))
 
 from unittest import TestCase, main
 
-from pynaryen.glob import WasmGlobal
-from pynaryen import opcodes
+from pywabt.glob import WasmGlobal
+from pywabt import opcodes
 
 class WasmGlobalTest(TestCase):
   def setUp(self):

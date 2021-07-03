@@ -2,7 +2,7 @@ from pathlib import Path
 from io import BytesIO
 import sys
 sys.path.append(str(Path(__file__).resolve().parent.parent.parent))
-from pynaryen import Module, opcodes
+from pywabt import Module, opcodes
 from unittest import TestCase, main
 parent_dir = Path(__file__).resolve().parent.parent
 class ModuleTest(TestCase):
@@ -21,7 +21,7 @@ class ModuleTest(TestCase):
 			# print(list(module.create_buffer()))
 			with open(str(parent_dir/'tmp/streamed.wasm'), 'wb') as streamed:
 				streamed.write(out.getbuffer().tobytes())
-			module.emit_binary(str(parent_dir/'tmp'), 'dumped')
+			module.dump_binary(str(parent_dir/'tmp'), 'dumped')
 			self.assertEqual(out.getbuffer().tobytes(),
 							         module.create_buffer())
 							 

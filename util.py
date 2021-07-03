@@ -3,11 +3,11 @@ uleb128 = leb128.u.encode
 from .opcodes import instructions, types as typecodes
 
 global encode_vector
-global ieee754
+global ieee754_f32
 
 def setup(encoding):
 	encode_vector = encoding["encode_vector"]
-	ieee754 = encoding["ieee754"]
+	ieee754_f32 = encoding["ieee754_f32"]
 def eval_expression(expression) -> bytearray:
 	return bytearray(flatten(map(eval_token, expression)))
 def eval_types(types):
@@ -30,7 +30,7 @@ def eval_token(ins):
 	if isinstance(ins, str):
 		return uleb128(instructions[ins])
 	elif isinstance(ins, float):
-		return ieee754(ins)
+		return ieee754_f32(ins)
 	elif isinstance(ins, int):
 		return uleb128(ins)
 	else:

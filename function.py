@@ -41,7 +41,7 @@ class WasmFunction:
 	def add_instructions(self, instr):
 		self.body.extend(eval_expression(instr))
 	# NOTE: Implement stuff here
-	def __repr__(self):
+	"""def __repr__(self):
 		fnc = "%s(func $%s " % '\t', self.name
 		fnc += "(param %s) " % ' '.join(list(map(type_name, self.types)))
 		if len(self.returns) > 0:
@@ -55,4 +55,4 @@ class WasmFunction:
 				count, prms = get_params(self.body, i, ins)
 				i += count
 				fnc += prms
-		return fnc
+		return fnc"""

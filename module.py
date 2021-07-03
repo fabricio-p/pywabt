@@ -25,9 +25,9 @@ class Module:
 		self.exports: list[WasmExport] = []
 		self.header: bytes = bytes([*MAGIC_HEADER, *MAGIC_VERSION])
 	
-	def emit_binary(self, path: str = getcwd(), name: str = None):
+	def dump_binary(self, path: str = getcwd(), name: str = None):
 		"""]
-		Direclty emits the binary representation to the specified file.
+		Direclty dumps the binary representation to the specified file.
 		If the 'path' argument is not provided, it defaults to the current working directory.
 		If the name argument is nof provided, it defaults to the name of the module
 		"""
@@ -38,7 +38,7 @@ class Module:
 		output.write(self.create_buffer())
 		output.close()
 	
-	def create_buffer(self):
+	def create_buffer(self) -> bytes:
 		"""
 		Spits out into memory the entire binary encoded module as a 'bytes' object
 		"""

@@ -3,9 +3,9 @@ import sys
 sys.path.append(str(Path(__file__).parent.parent.parent))
 
 from unittest import TestCase, main
-from pynaryen.encoding import (encode_vector, create_section,
-                              ieee754, encode_string)
-from pynaryen.opcodes import sections
+from pywabt.encoding import (encode_vector, create_section,
+                              ieee754_f32, encode_string)
+from pywabt.opcodes import sections
 
 class EncodingTest(TestCase):
   def test_encode_vector(self):
@@ -18,7 +18,7 @@ class EncodingTest(TestCase):
                      bytes([sections['code'], 3, 24, 23, 24,
                                               112, 54, 34, 98]))
   def test_ieee754(self):
-    self.assertEqual(ieee754(4.5), bytes([0, 0, 144, 64]))
+    self.assertEqual(ieee754_f32(4.5), bytes([0, 0, 144, 64]))
   def test_encode_string(self):
     self.assertEqual(encode_string("Hello, World!"), b'\x0dHello, World!')
 
