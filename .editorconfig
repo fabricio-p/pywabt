@@ -1,0 +1,11 @@
+root = true
+
+[*.py]
+indent_type = tab
+tab_width = 2
+tab_size = 2
+
+[tests/*.py]
+indent_type = tab
+tab_width = 2
+tab_size = 2
