@@ -20,7 +20,7 @@ def ieee754_f32(n):
 	buf[0] = n
 	return buf.tobytes()
 
-def ieee_f64(n):
+def ieee754_f64(n):
     buf = array('d', bytes([0]) * 4)
     buf[0] = n
     return buf.tobytes()
