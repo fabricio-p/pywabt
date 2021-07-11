@@ -10,7 +10,7 @@ library by doing `import pywabt`
 The main building block is the **Module** class. It is the representation of
 the WebAssembly module that you will create. The class takes only a parameter,
 the modules name.
- 1. :
+Example:
 ```python
 # importing
 from pywabt import Module

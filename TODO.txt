@@ -1,3 +1,3 @@
-support valodation
+support validation
 support decoding
 support wat

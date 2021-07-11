@@ -1,7 +1,7 @@
 from pathlib import Path
 from io import BytesIO
 import sys
-sys.path.append(str(Path(__file__).resolve().parent.parent.parent))
+sys.path.append(str(Path(__file__).resolve().parent.parent))
 from pywabt import Module, opcodes
 from unittest import TestCase, main
 parent_dir = Path(__file__).resolve().parent.parent

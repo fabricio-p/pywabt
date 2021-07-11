@@ -1,5 +1,5 @@
 import sys, os, pathlib
-project_dir = pathlib.Path(__file__).parent.parent
+project_dir = pathlib.Path(__file__).parent
 sys.path.append(str(project_dir.parent))
 
 from unittest import TestCase, main
