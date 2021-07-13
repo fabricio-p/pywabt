@@ -1,8 +1,7 @@
-import sys, pathlib
-sys.path.append(str(pathlib.Path(__file__).parent))
-
-from pywabt import __author__, __version__, __email__
+import sys
 from pathlib import Path
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+from pywabt import __author__, __version__, __email__
 from setuptools import setup
 from setuptools import find_packages
 from sys import version_info

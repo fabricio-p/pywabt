@@ -4,3 +4,4 @@
 *.swo
 /tmp
 *.egg-info
+/dist
